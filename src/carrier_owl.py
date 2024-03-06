@@ -82,9 +82,13 @@ def search_keyword(
                     url=url, title=title_trans, abstract=abstract_trans,
                     score=score, words=hit_keywords)
             results.append(result)
-    
+            
+    print("close")
+    driver.close()
+    print("quit")
     # ブラウザ停止
     driver.quit()
+    print("return")
     return results
 
 
