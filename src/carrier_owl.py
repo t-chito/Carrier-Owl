@@ -16,7 +16,7 @@ from dataclasses import dataclass
 import arxiv
 import requests
 # setting
-warnings.filterwarnings('ignore')
+# warnings.filterwarnings('ignore')
 
 
 @dataclass
@@ -52,7 +52,15 @@ def search_keyword(
     options.add_argument('--headless')
 
     # ブラウザーを起動
-    driver = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=options)
+    print("GeckoDriverをインストールします。")
+    driver_path = GeckoDriverManager().install()
+    print(f"GeckoDriverのパス: {driver_path}")
+
+    print("Firefoxをヘッドレスモードで起動します。")
+    driver = webdriver.Firefox(executable_path=driver_path, options=options)
+    print("Firefoxが正常に起動しました。")
+
+    # driver = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=options)
 
     print(articles)
     for article in articles:
