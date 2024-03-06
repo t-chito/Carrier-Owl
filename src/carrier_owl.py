@@ -60,9 +60,11 @@ def search_keyword(
     driver = webdriver.Firefox(executable_path=driver_path, options=options)
     print("Firefoxが正常に起動しました。")
 
-    # driver = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=options)
+    print("Firefoxの起動をスキップします。")
+    print("次の処理を実行します。")
+    print(articles)  # この行が以前に成功していた場合、再度ここで出力を試みます。
+    print("articlesの出力後")
 
-    print(articles)
     for article in articles:
         url = article['arxiv_url']
         title = article['title']
