@@ -45,6 +45,8 @@ def search_keyword(
         ) -> list:
     results = []
     
+    print(articles)
+    
     # ヘッドレスモードでブラウザを起動
     options = Options()
     options.add_argument('--headless')
@@ -191,6 +193,7 @@ def main():
                            max_results=1000,
                            sort_by='submittedDate',
                            iterative=False)
+    print("196")
     results = search_keyword(articles, keywords, score_threshold)
 
     slack_id = os.getenv("SLACK_ID") or args.slack_id
