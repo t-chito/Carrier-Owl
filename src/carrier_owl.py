@@ -45,7 +45,7 @@ def search_keyword(
         ) -> list:
     results = []
     
-    print(articles)
+    # print(articles)
     
     # ヘッドレスモードでブラウザを起動
     options = Options()
@@ -62,10 +62,11 @@ def search_keyword(
 
     print("Firefoxの起動をスキップします。")
     print("次の処理を実行します。")
-    print(articles)  # この行が以前に成功していた場合、再度ここで出力を試みます。
+    # print(articles)  # この行が以前に成功していた場合、再度ここで出力を試みます。
     print("articlesの出力後")
 
     for article in articles:
+        print(article)
         url = article['arxiv_url']
         title = article['title']
         abstract = article['summary']
