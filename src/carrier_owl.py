@@ -73,15 +73,20 @@ def search_keyword(
         score, hit_keywords = calc_score(abstract, keywords)
         print(score)
         if (score != 0) and (score >= score_threshold):
+            print("1")
             title_trans = get_translated_text('ja', 'en', title, driver)
             abstract = abstract.replace('\n', '')
+            print("2")
             abstract_trans = get_translated_text('ja', 'en', abstract, driver)
             # abstract_trans = textwrap.wrap(abstract_trans, 40)  # 40行で改行
             # abstract_trans = '\n'.join(abstract_trans)
+            print("3")
             result = Result(
                     url=url, title=title_trans, abstract=abstract_trans,
                     score=score, words=hit_keywords)
+            print("4")
             results.append(result)
+            print("5")
             
     print("close")
     driver.close()
