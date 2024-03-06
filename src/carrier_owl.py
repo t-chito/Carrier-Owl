@@ -51,12 +51,14 @@ def search_keyword(
 
     # ブラウザーを起動
     driver = webdriver.Firefox(executable_path=GeckoDriverManager().install(), options=options)
-    
+
+    print(articles)
     for article in articles:
         url = article['arxiv_url']
         title = article['title']
         abstract = article['summary']
         score, hit_keywords = calc_score(abstract, keywords)
+        print(score)
         if (score != 0) and (score >= score_threshold):
             title_trans = get_translated_text('ja', 'en', title, driver)
             abstract = abstract.replace('\n', '')
