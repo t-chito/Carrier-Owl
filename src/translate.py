@@ -1,48 +1,41 @@
-import time
-import urllib.parse
+"""和訳を行うモジュール"""
 
-from selenium.common.exceptions import NoSuchElementException
+import requests
+
+API_KEY: str = "7c672a7a-6c0a-4893-bf87-67450b6ee072:fx"
 
 
-def get_translated_text(from_lang: str, to_lang: str, from_text: str, driver) -> str:
+def translate_text(text: str, source_lang: str = "EN", target_lang: str = "JA") -> str:
+    """テキストを翻訳して返す
+
+    DeepL API で和訳を行う
+    - https://qiita.com/yaju/items/bf4613393cd4ee402d17
+
+    Parameters
+    ----------
+    text : str
+        翻訳するテキスト
+    source_lang : str, optional
+        入力言語, by default "ja"
+    target_lang : str, optional
+        出力言語, by default "en"
+
+    Returns
+    -------
+    str
+        翻訳されたテキスト
     """
-    https://qiita.com/fujino-fpu/items/e94d4ff9e7a5784b2987
-    """
 
-    sleep_time = 1
+    request_params = {
+        "auth_key": API_KEY,
+        "text": text,
+        "source_lang": source_lang,
+        "target_lang": target_lang,
+    }
 
-    # urlencode
-    from_text = urllib.parse.quote(from_text)
+    response = requests.post(
+        "https://api-free.deepl.com/v2/translate", data=request_params
+    ).json()
+    result = response["translations"][0]["text"]
 
-    # url作成
-    url = (
-        "https://www.deepl.com/translator#"
-        + from_lang
-        + "/"
-        + to_lang
-        + "/"
-        + from_text
-    )
-
-    driver.get(url)
-    driver.implicitly_wait(10)  # 見つからないときは、10秒まで待つ
-
-    for i in range(30):
-        # 指定時間待つ
-        time.sleep(sleep_time)
-        to_text = get_text_from_driver(driver)
-
-        if to_text:
-            break
-    if to_text is None:
-        return urllib.parse.unquote(from_text)
-    return to_text
-
-
-def get_text_from_driver(driver) -> str | None:
-    try:
-        elem = driver.find_element_by_class_name("lmt__translations_as_text__text_btn")
-    except NoSuchElementException:
-        return None
-    text = elem.get_attribute("innerHTML")
-    return text
+    return result

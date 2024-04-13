@@ -3,12 +3,9 @@
 import datetime
 
 import arxiv
-from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
-from webdriver_manager.firefox import GeckoDriverManager
 
 from .my_types import Article, Keywords, Result
-from .translate import get_translated_text
+from .translate import translate_text
 
 
 def make_arxiv_query(subject: str) -> str:
@@ -100,13 +97,6 @@ def filter_articles(
     list[Result]
         フィルタした論文のリスト
     """
-    # ヘッドレスモードでブラウザを起動
-    options = Options()
-    options.add_argument("--headless")
-
-    # ブラウザーを起動
-    driver_path = GeckoDriverManager().install()
-    driver = webdriver.Firefox(executable_path=driver_path, options=options)
 
     results: list[Result] = []
 
@@ -119,10 +109,10 @@ def filter_articles(
         score, hit_keywords = calc_score(abstract, keywords)
 
         if (score != 0) and (score >= score_threshold):
-            title_trans = get_translated_text("ja", "en", title, driver)
+            title_trans = translate_text(title)
 
             abstract = abstract.replace("\n", "")
-            abstract_trans = get_translated_text("ja", "en", abstract, driver)
+            abstract_trans = translate_text(abstract)
 
             result = Result(
                 url=url,
@@ -133,6 +123,4 @@ def filter_articles(
             )
             results.append(result)
 
-    driver.close()
-    driver.quit()
     return results
