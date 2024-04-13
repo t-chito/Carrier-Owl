@@ -27,11 +27,9 @@ jobs:
       - name: install dependencies
         run: poetry install
 
-      - uses: browser-actions/setup-firefox@v1
-      - run: firefox --version
-
       - name: Run owl
-        run: poetry run python src/carrier_owl.py
+        run: poetry run task start
         env:
+          DEEPL_AUTH_KEY: ${{ secrets.DEEPL_AUTH_KEY }}
           SLACK_ID: ${{ secrets.SLACK_ID }}
           LINE_TOKEN: ${{ secrets.LINE_TOKEN }}
