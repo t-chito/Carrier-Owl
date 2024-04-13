@@ -69,10 +69,11 @@ def notify(results: list[Result]) -> None:
     # 結果を通知
     for result in results:
         text = (
-            f"\n url: {result.url}"
+            f"\n タイトル (原文): *{result.title_original}*"
+            f"\n タイトル (翻訳): *{result.title_translated}*"
             f"\n keywords: `{result.words}`"
-            f"\n title (原文): {result.title_original}"
-            f"\n title (翻訳): {result.title_translated}"
+            f"\n subjects: `{result.subjects}`"
+            f"\n URL: {result.url}"
             f"\n {divider}"
         )
 

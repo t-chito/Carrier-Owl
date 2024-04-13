@@ -4,7 +4,7 @@ import datetime
 
 import arxiv
 
-from .my_types import Article, Result
+from .my_types import Article, Result, taxonomy
 from .translate import translate_texts
 
 
@@ -85,6 +85,40 @@ def list_containing_keywords(abstract: str, keywords: list[str]) -> list[str]:
     return containing_keywords
 
 
+def get_subjects(article: Article) -> list[str]:
+    """article のメタ情報から学問領域のリストを取得する
+
+    Returns
+    -------
+    list[str]
+        学問領域のリスト
+    """
+
+    subjects = [tag["term"] for tag in article["tags"]]
+    return subjects
+
+
+def convert_subjects_category_to_expression(subject: str) -> str:
+    """subject を読んでわかる表現に変換する
+
+    Parameters
+    ----------
+    subject : str
+        細分化した学問領域。cs.AI など
+
+    Returns
+    -------
+    str
+        表示用の文字列
+    """
+
+    if subject not in taxonomy:
+        # 今は cs 系のみ taxonomy に用意しているので、それ以外はそのまま返す
+        return subject
+    else:
+        return subject + ": " + taxonomy[subject]["name"]
+
+
 def format_articles_to_result(
     articles: list[Article], keywords: list[str]
 ) -> list[Result]:
@@ -115,12 +149,17 @@ def format_articles_to_result(
             article["summary"],
         )
         containing_keywords = list_containing_keywords(abstract, keywords)
+        _subjects = get_subjects(article)
+        subjects = [
+            convert_subjects_category_to_expression(subject) for subject in _subjects
+        ]
 
         result = Result(
             url=url,
             title_original=title,
             title_translated=titles_translated[index],
             words=containing_keywords,
+            subjects=subjects,
         )
         results.append(result)
 

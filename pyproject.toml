@@ -32,6 +32,9 @@ build-backend = "poetry.masonry.api"
 # poetry run task start
 start = "python -m src"
 
+# poetry run task tax
+tax = "python scripts/get_taxonomy.py"
+
 [[tool.mypy.overrides]]
 module = "arxiv.*"
 ignore_missing_imports = true
