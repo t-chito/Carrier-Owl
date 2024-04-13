@@ -38,3 +38,39 @@ def translate_text(text: str, source_lang: str = "EN", target_lang: str = "JA") 
     )
 
     return response.json()["translations"][0]["text"]
+
+
+def translate_texts(
+    texts: list[str], source_lang: str = "EN", target_lang: str = "JA"
+) -> list[str]:
+    """複数のテキストを翻訳して返す
+
+    Parameters
+    ----------
+    texts : list[str]
+        翻訳するテキスト
+    source_lang : str, optional
+        入力言語, by default "ja"
+    target_lang : str, optional
+        出力言語, by default "en"
+
+    Returns
+    -------
+    list[str]
+        翻訳されたテキスト
+    """
+
+    request_params = {
+        "auth_key": DEEPL_AUTH_KEY,
+        "text": texts,
+        "source_lang": source_lang,
+        "target_lang": target_lang,
+    }
+
+    response = requests.post(
+        "https://api-free.deepl.com/v2/translate", data=request_params
+    )
+
+    results = [res["text"] for res in response.json()["translations"]]
+
+    return results
