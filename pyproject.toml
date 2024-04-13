@@ -17,6 +17,27 @@ arxiv = "^0.5.3"
 
 [tool.poetry.dev-dependencies]
 
+[tool.poetry.group.dev.dependencies]
+types-requests = "^2.31.0.20240406"
+types-beautifulsoup4 = "^4.12.0.20240229"
+types-pyyaml = "^6.0.12.20240311"
+
 [build-system]
 requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
+
+[[tool.mypy.overrides]]
+module = "arxiv.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "slackweb.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "selenium.*" 
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "webdriver_manager.*"
+ignore_missing_imports = true
