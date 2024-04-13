@@ -1,3 +1,7 @@
+"""
+メイン関数
+"""
+
 import argparse
 import os
 
@@ -5,7 +9,7 @@ import yaml
 
 from .my_types import Keywords
 from .notify import notify
-from .search import request_arxiv_articles, search_keyword
+from .search import filter_articles, request_arxiv_articles
 
 
 def get_config() -> tuple[str, Keywords, float]:
@@ -52,7 +56,7 @@ def main() -> None:
     articles = request_arxiv_articles(subject)
 
     # フィルタする
-    results = search_keyword(articles, keywords, score_threshold)
+    results = filter_articles(articles, keywords, score_threshold)
 
     # 通知する
     args = get_args()

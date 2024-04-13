@@ -1,3 +1,5 @@
+"""arXiv から論文を検索するモジュール"""
+
 import datetime
 
 import arxiv
@@ -79,7 +81,7 @@ def calc_score(abstract: str, keywords: Keywords) -> tuple[float, list[str]]:
     return sum_score, hit_kwd_list
 
 
-def search_keyword(
+def filter_articles(
     articles: list[Article], keywords: Keywords, score_threshold: float
 ) -> list[Result]:
     """論文のリストから、キーワードにマッチする論文を抽出する

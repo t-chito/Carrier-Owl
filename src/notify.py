@@ -1,3 +1,5 @@
+"""通知関連の関数を提供するモジュール"""
+
 import datetime
 
 import requests
