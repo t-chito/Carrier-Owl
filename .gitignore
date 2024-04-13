@@ -1,3 +1,5 @@
+.env.local
+
 *.ipynb_checkpoints
 *checkpoint.ipynb
 .ipynb_checkpoints

@@ -5,52 +5,45 @@ import datetime
 import requests
 import slackweb
 
+from .config import LINE_TOKEN, SLACK_ID
 from .my_types import Result
 
 
-def send2app(text: str, slack_id: str | None, line_token: str | None) -> None:
+def send2app(text: str) -> None:
     """slack または line に通知を送る
 
     Parameters
     ----------
     text : str
         通知するメッセージ
-    slack_id : str | None
-        slack の webhook URL
-    line_token : str | None
-        LINE のトークン
     """
     # slack
-    if slack_id:
-        slack = slackweb.Slack(url=slack_id)
+    if SLACK_ID:
+        slack = slackweb.Slack(url=SLACK_ID)
         slack.notify(text=text)
 
     # line
-    if line_token:
+    if LINE_TOKEN:
         line_notify_api = "https://notify-api.line.me/api/notify"
-        headers = {"Authorization": f"Bearer {line_token}"}
+        headers = {"Authorization": f"Bearer {LINE_TOKEN}"}
         data = {"message": f"message: {text}"}
         requests.post(line_notify_api, headers=headers, data=data)
 
 
-def notify(results: list[Result], slack_id: str | None, line_token: str | None) -> None:
+def notify(results: list[Result]) -> None:
     """結果を整形して通知する
 
     Parameters
     ----------
     results : list[Result]
         検索結果
-    slack_id : str | None
-        slack の webhook URL
-    line_token : str | None
-        LINE のトークン
     """
     # 通知の開始部分
     star = "*" * 80
     today = datetime.date.today()
     n_articles = len(results)
     text = f"{star}\n \t \t {today}\tnum of articles = {n_articles}\n{star}"
-    send2app(text, slack_id, line_token)
+    send2app(text)
 
     # 結果を descending order で通知
     for result in sorted(results, reverse=True, key=lambda x: x.score):
@@ -64,4 +57,4 @@ def notify(results: list[Result], slack_id: str | None, line_token: str | None) 
             f"\n {star}"
         )
 
-        send2app(text, slack_id, line_token)
+        send2app(text)

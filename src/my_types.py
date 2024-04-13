@@ -25,3 +25,9 @@ class Article(TypedDict):
 
 
 Keywords = dict[str, int]
+
+
+class Config(TypedDict):
+    subject: str
+    keywords: Keywords
+    score_threshold: int
