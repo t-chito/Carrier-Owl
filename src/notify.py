@@ -30,31 +30,53 @@ def send2app(text: str) -> None:
         requests.post(line_notify_api, headers=headers, data=data)
 
 
+divider = "-" * 80
+
+
+def create_dividing_text(num_of_articles: int) -> str:
+    """通知の開始・終了部分のテキストを作成する
+
+    Parameters
+    ----------
+    num_of_articles : int
+        論文の数
+
+    Returns
+    -------
+    str
+        通知の開始部分のテキスト
+    """
+    today = datetime.date.today()
+    text = f"{today} : num of articles = {num_of_articles}"
+    return f"{divider}\n" f"{text}" f"\n{divider}"
+
+
 def notify(results: list[Result]) -> None:
     """結果を整形して通知する
 
     Parameters
     ----------
     results : list[Result]
-        検索結果
+        通知内容
     """
-    # 通知の開始部分
-    star = "*" * 80
-    today = datetime.date.today()
-    n_articles = len(results)
-    text = f"{star}\n \t \t {today}\tnum of articles = {n_articles}\n{star}"
-    send2app(text)
 
-    # 結果を descending order で通知
-    for result in sorted(results, reverse=True, key=lambda x: x.score):
+    num_of_articles = len(results)
+    dividing_text = create_dividing_text(num_of_articles)
+
+    # 通知の開始部分
+    send2app(dividing_text)
+
+    # 結果を通知
+    for result in results:
         text = (
-            f"\n score: `{result.score}`"
-            f"\n hit keywords: `{result.words}`"
             f"\n url: {result.url}"
-            f"\n title:    {result.title}"
-            f"\n abstract:"
-            f"\n \t {result.abstract}"
-            f"\n {star}"
+            f"\n keywords: `{result.words}`"
+            f"\n title (原文): {result.title_original}"
+            f"\n title (翻訳): {result.title_translated}"
+            f"\n {divider}"
         )
 
         send2app(text)
+
+    # 通知の終了部分
+    send2app(dividing_text)

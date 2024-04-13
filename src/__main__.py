@@ -2,17 +2,17 @@
 メイン関数
 """
 
-from .config import KEYWORDS, SCORE_THRESHOLD, SUBJECT
+from .config import KEYWORDS, SUBJECT
 from .notify import notify
-from .search import filter_articles, request_arxiv_articles
+from .search import format_articles_to_result, request_arxiv_articles
 
 
 def main() -> None:
     # 論文を取得する
-    articles = request_arxiv_articles(SUBJECT)
+    articles = request_arxiv_articles(SUBJECT, KEYWORDS)
 
-    # フィルタする
-    results = filter_articles(articles, KEYWORDS, SCORE_THRESHOLD)
+    # フォーマットする
+    results = format_articles_to_result(articles, KEYWORDS)
 
     # 通知する
     notify(results)

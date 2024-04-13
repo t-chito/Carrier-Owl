@@ -9,10 +9,9 @@ from typing import TypedDict
 @dataclass
 class Result:
     url: str
-    title: str
-    abstract: str
+    title_translated: str
+    title_original: str
     words: list[str]
-    score: float = 0.0
 
 
 # see https://note.nkmk.me/python-arxiv-api-download-rss/
@@ -24,10 +23,6 @@ class Article(TypedDict):
     summary: str
 
 
-Keywords = dict[str, int]
-
-
 class Config(TypedDict):
     subject: str
-    keywords: Keywords
-    score_threshold: int
+    keywords: list[str]

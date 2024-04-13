@@ -13,18 +13,13 @@ from .my_types import Config
 
 config: Config = {
     # arxivの学問領域の指定
-    "subject": "cat:cs.*",
-    # 検索キーワードと重み
-    "keywords": {
-        "LLM": 1,
-    },
-    # 通知の閾値
-    "score_threshold": 1,
+    "subject": "cs.*",
+    # abstract に含まれるべきワード
+    "keywords": ["LLM"],
 }
 
 SUBJECT = config["subject"]
 KEYWORDS = config["keywords"]
-SCORE_THRESHOLD = config["score_threshold"]
 
 """
 環境変数の設定
