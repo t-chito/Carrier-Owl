@@ -3,11 +3,12 @@ import os
 
 import yaml
 
+from .my_types import Keywords
 from .notify import notify
 from .search import request_arxiv_articles, search_keyword
 
 
-def get_config() -> tuple[str, dict, float]:
+def get_config() -> tuple[str, Keywords, float]:
     """設定ファイルを読み込む
 
     subject: 学問領域の指定
@@ -16,7 +17,7 @@ def get_config() -> tuple[str, dict, float]:
 
     Returns
     -------
-    tuple[str, dict, float]
+    tuple[str, Keywords, float]
         設定ファイルの内容 (subject, keywords, score_threshold)
     """
     file_abs_path = os.path.abspath(__file__)

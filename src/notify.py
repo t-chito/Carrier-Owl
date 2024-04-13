@@ -36,7 +36,7 @@ def notify(results: list[Result], slack_id: str | None, line_token: str | None) 
 
     Parameters
     ----------
-    results : list
+    results : list[Result]
         検索結果
     slack_id : str | None
         slack の webhook URL

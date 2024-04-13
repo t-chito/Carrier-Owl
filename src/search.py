@@ -5,7 +5,7 @@ from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from webdriver_manager.firefox import GeckoDriverManager
 
-from .my_types import Result
+from .my_types import Article, Keywords, Result
 from .translate import get_translated_text
 
 
@@ -34,7 +34,7 @@ def make_arxiv_query(subject: str) -> str:
     )
 
 
-def request_arxiv_articles(subject: str) -> list:
+def request_arxiv_articles(subject: str) -> list[Article]:
     """arXiv から指定した学問領域の論文を取得する
 
     Parameters
@@ -44,7 +44,7 @@ def request_arxiv_articles(subject: str) -> list:
 
     Returns
     -------
-    list
+    list[Article]
         arXiv から取得した論文のリスト
     """
     query = make_arxiv_query(subject)
@@ -53,7 +53,7 @@ def request_arxiv_articles(subject: str) -> list:
     )
 
 
-def calc_score(abstract: str, keywords: dict) -> tuple[float, list]:
+def calc_score(abstract: str, keywords: Keywords) -> tuple[float, list[str]]:
     """論文のアブストラクトにキーワードが含まれるかを判定し、スコアを計算する
 
     キーワードが含まれる場合、重み付けした値でスコアに加算する。
@@ -62,15 +62,15 @@ def calc_score(abstract: str, keywords: dict) -> tuple[float, list]:
     ----------
     abstract : str
         論文の要約
-    keywords : dict
+    keywords : Keywords
         キーワードと、その重み付けを格納した辞書
 
     Returns:
-        tuple[float, list]: 合算したスコアと、ヒットしたキーワードのリスト
+        tuple[float, list[str]]: 合算したスコアと、ヒットしたキーワードのリスト
     """
 
     sum_score = 0.0
-    hit_kwd_list = []
+    hit_kwd_list: list[str] = []
 
     for keyword, weighted_score in keywords.items():
         if keyword.lower() in abstract.lower():
@@ -80,15 +80,15 @@ def calc_score(abstract: str, keywords: dict) -> tuple[float, list]:
 
 
 def search_keyword(
-    articles: list, keywords: dict, score_threshold: float
+    articles: list[Article], keywords: Keywords, score_threshold: float
 ) -> list[Result]:
     """論文のリストから、キーワードにマッチする論文を抽出する
 
     Parameters
     ----------
-    articles : list
+    articles : list[Article]
         論文のリスト
-    keywords : dict
+    keywords : Keywords
         キーワードと、その重み付けを格納した辞書
     score_threshold : float
         スコアの閾値
