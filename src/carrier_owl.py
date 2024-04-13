@@ -28,13 +28,13 @@ class Result:
     score: float = 0.0
 
 
-def calc_score(abst: str, keywords: dict) -> (float, list):
+def calc_score(abstract: str, keywords: dict) -> tuple[float, list]:
     sum_score = 0.0
     hit_kwd_list = []
 
     for word in keywords.keys():
         score = keywords[word]
-        if word.lower() in abst.lower():
+        if word.lower() in abstract.lower():
             sum_score += score
             hit_kwd_list.append(word)
     return sum_score, hit_kwd_list
@@ -167,8 +167,6 @@ def get_translated_text(from_lang: str, to_lang: str, from_text: str, driver) ->
     for i in range(30):
         # 指定時間待つ
         time.sleep(sleep_time)
-        html = driver.page_source
-        # to_text = get_text_from_page_source(html)
         to_text = get_text_from_driver(driver)
 
         if to_text:
@@ -178,7 +176,7 @@ def get_translated_text(from_lang: str, to_lang: str, from_text: str, driver) ->
     return to_text
 
 
-def get_text_from_driver(driver) -> str:
+def get_text_from_driver(driver) -> str | None:
     try:
         elem = driver.find_element_by_class_name("lmt__translations_as_text__text_btn")
     except NoSuchElementException:
@@ -187,10 +185,11 @@ def get_text_from_driver(driver) -> str:
     return text
 
 
-def get_text_from_page_source(html: str) -> str:
+def get_text_from_page_source(html: str) -> str | None:
     soup = BeautifulSoup(html, features="lxml")
     target_elem = soup.find(class_="lmt__translations_as_text__text_btn")
-    text = target_elem.text
+
+    text = target_elem.text if target_elem else None
     return text
 
 
@@ -199,7 +198,7 @@ def get_config() -> dict:
     file_dir = os.path.dirname(file_abs_path)
     config_path = f"{file_dir}/../config.yaml"
     with open(config_path, "r") as yml:
-        config = yaml.load(yml)
+        config = yaml.load(yml, Loader=yaml.FullLoader)
     return config
 
 
