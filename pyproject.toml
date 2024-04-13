@@ -5,7 +5,7 @@ description = ""
 authors = ["hppRC <hpp.ricecake@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.11"
 wheel = "^0.38.1"
 slackweb = "^1.0.5"
 lxml = "4.9.4"
