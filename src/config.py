@@ -34,6 +34,8 @@ SCORE_THRESHOLD = config["score_threshold"]
 dotenv_path = join(dirname(__file__), "..", ".env.local")
 env_values = dotenv_values(dotenv_path)
 
-SLACK_ID: str | None = os.getenv("SLACK_ID") or env_values["SLACK_ID"]
-LINE_TOKEN: str | None = os.getenv("LINE_TOKEN") or env_values["LINE_TOKEN"]
-DEEPL_AUTH_KEY: str | None = os.getenv("DEEPL_AUTH_KEY") or env_values["DEEPL_AUTH_KEY"]
+SLACK_ID: str | None = os.getenv("SLACK_ID") or env_values.get("SLACK_ID", None)
+LINE_TOKEN: str | None = os.getenv("LINE_TOKEN") or env_values.get("LINE_TOKEN", None)
+DEEPL_AUTH_KEY: str | None = os.getenv("DEEPL_AUTH_KEY") or env_values.get(
+    "DEEPL_AUTH_KEY", None
+)

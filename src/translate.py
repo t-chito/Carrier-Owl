@@ -2,7 +2,7 @@
 
 import requests
 
-API_KEY: str = "7c672a7a-6c0a-4893-bf87-67450b6ee072:fx"
+from .config import DEEPL_AUTH_KEY
 
 
 def translate_text(text: str, source_lang: str = "EN", target_lang: str = "JA") -> str:
@@ -27,7 +27,7 @@ def translate_text(text: str, source_lang: str = "EN", target_lang: str = "JA") 
     """
 
     request_params = {
-        "auth_key": API_KEY,
+        "auth_key": DEEPL_AUTH_KEY,
         "text": text,
         "source_lang": source_lang,
         "target_lang": target_lang,
@@ -35,7 +35,6 @@ def translate_text(text: str, source_lang: str = "EN", target_lang: str = "JA") 
 
     response = requests.post(
         "https://api-free.deepl.com/v2/translate", data=request_params
-    ).json()
-    result = response["translations"][0]["text"]
+    )
 
-    return result
+    return response.json()["translations"][0]["text"]
