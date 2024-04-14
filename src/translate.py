@@ -50,15 +50,19 @@ def translate_texts(
     texts : list[str]
         翻訳するテキスト
     source_lang : str, optional
-        入力言語, by default "ja"
+        入力言語, by default "EN"
     target_lang : str, optional
-        出力言語, by default "en"
+        出力言語, by default "JA"
 
     Returns
     -------
     list[str]
         翻訳されたテキスト
     """
+
+    # 空のリストの場合は API を叩くとエラーになるので、空リストを返す
+    if len(texts) == 0:
+        return []
 
     request_params = {
         "auth_key": DEEPL_AUTH_KEY,
