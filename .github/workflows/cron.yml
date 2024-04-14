@@ -2,8 +2,9 @@ name: Carrier Owl
 
 on:
   schedule:
-    # github actions のデフォルトの time zone が UTC なので、日本時間 - 9時間 した値を書く
-    - cron: "50 0 * * 0,3,4,5,6"
+    # 時刻: 9:59 (UTC) == 18:59(JST, UTC+9)
+    # 曜日: 日曜日(0)、水曜日(3)、木曜日(4)、金曜日(5)、土曜日(6)
+    - cron: "59 9 * * 0,3,4,5,6"
   workflow_dispatch:
 
   push:
