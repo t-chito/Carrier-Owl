@@ -11,8 +11,6 @@ slackweb = "^1.0.5"
 lxml = "4.9.4"
 pyyaml = "5.3.1"
 beautifulsoup4 = "^4.9.3"
-selenium = "^3.141.0"
-webdriver-manager = "^3.3.0"
 arxiv = "^0.5.3"
 python-dotenv = "^1.0.1"
 
@@ -41,12 +39,4 @@ ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
 module = "slackweb.*"
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = "selenium.*" 
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = "webdriver_manager.*"
 ignore_missing_imports = true
