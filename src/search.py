@@ -4,8 +4,11 @@ import datetime
 
 import arxiv
 
-from .my_types import Article, Result, taxonomy
+from .config import KEYWORDS, SUBJECT
+from .my_types import ArticleInfo, taxonomy
 from .translate import translate_texts
+
+client = arxiv.Client()
 
 
 def make_arxiv_query(subject: str, keywords: list[str]) -> str:
@@ -44,7 +47,7 @@ def make_arxiv_query(subject: str, keywords: list[str]) -> str:
     )
 
 
-def request_arxiv_articles(subject: str, keywords: list[str]) -> list[Article]:
+def search_arxiv_articles(subject: str, keywords: list[str]) -> list[arxiv.Result]:
     """指定した学問領域とキーワードの arXiv 論文を取得する
 
     Parameters
@@ -54,16 +57,21 @@ def request_arxiv_articles(subject: str, keywords: list[str]) -> list[Article]:
 
     Returns
     -------
-    list[Article]
+    list[arxiv.Result]
         arXiv から取得した論文のリスト
     """
     query = make_arxiv_query(subject, keywords)
-    return arxiv.query(
-        query=query, max_results=1000, sort_by="submittedDate", iterative=False
+    search = arxiv.Search(
+        query=query,
+        max_results=100,
+        sort_by=arxiv.SortCriterion.SubmittedDate,
+        iterative=False,
     )
+    results = client.results(search)
+    return list(results)
 
 
-def list_containing_keywords(abstract: str, keywords: list[str]) -> list[str]:
+def get_containing_keywords(abstract: str, keywords: list[str]) -> list[str]:
     """論文のアブストラクトに含まれているキーワードを列挙する
 
     Parameters
@@ -83,19 +91,6 @@ def list_containing_keywords(abstract: str, keywords: list[str]) -> list[str]:
         if keyword.lower() in abstract.lower():
             containing_keywords.append(keyword)
     return containing_keywords
-
-
-def get_subjects(article: Article) -> list[str]:
-    """article のメタ情報から学問領域のリストを取得する
-
-    Returns
-    -------
-    list[str]
-        学問領域のリスト
-    """
-
-    subjects = [tag["term"] for tag in article["tags"]]
-    return subjects
 
 
 def convert_subjects_category_to_expression(subject: str) -> str:
@@ -119,48 +114,72 @@ def convert_subjects_category_to_expression(subject: str) -> str:
         return subject + ": " + taxonomy[subject]["name"]
 
 
-def format_articles_to_result(
-    articles: list[Article], keywords: list[str]
-) -> list[Result]:
+def format_search_results_into_articles_info(
+    search_results: list[arxiv.Result], keywords: list[str]
+) -> list[ArticleInfo]:
     """論文のリストを表示用のデータ形式に変換する
 
     Parameters
     ----------
-    articles : list[Article]
+    search_results : list[arxiv.Result]
         論文の検索結果のリスト
     keywords : list[str]
         abstract に含まれる可能性のあるワード
 
     Returns
     -------
-    list[Result]
+    list[ArticleInfo]
         表示用の論文リスト
     """
 
-    results: list[Result] = []
+    articles: list[ArticleInfo] = []
 
     # API を叩くのを一回にするために、タイトルだけ先に取り出して翻訳する # FIXME: ダサい
-    titles_translated = translate_texts([article["title"] for article in articles])
+    titles_translated = translate_texts(
+        [search_result.title for search_result in search_results]
+    )
 
-    for index, article in enumerate(articles):
-        url, title, abstract = (
-            article["arxiv_url"],
-            article["title"],
-            article["summary"],
+    for index, search_result in enumerate(search_results):
+        abstract, _subjects = (
+            search_result.summary,
+            search_result.categories,
         )
-        containing_keywords = list_containing_keywords(abstract, keywords)
-        _subjects = get_subjects(article)
+        containing_keywords = get_containing_keywords(abstract, keywords)
         subjects = [
             convert_subjects_category_to_expression(subject) for subject in _subjects
         ]
 
-        result = Result(
-            url=url,
-            title_original=title,
+        result = ArticleInfo(
+            id=search_result.get_short_id(),
+            url=search_result.entry_id,
+            title_original=search_result.title,
             title_translated=titles_translated[index],
             words=containing_keywords,
             subjects=subjects,
         )
-        results.append(result)
+        articles.append(result)
 
-    return results
+    return articles
+
+
+def get_articles(
+    subject: str = SUBJECT, keywords: list[str] = KEYWORDS
+) -> list[ArticleInfo]:
+    """学問領域とキーワードを指定して論文を検索する
+
+    Parameters
+    ----------
+    subject : str
+        学問領域
+    keywords : list[str]
+        abstract に含まれるキーワード
+
+    Returns
+    -------
+    list[ArticleInfo]
+        論文リスト
+    """
+    search_results = search_arxiv_articles(subject, keywords)
+    articles = format_search_results_into_articles_info(search_results, keywords)
+
+    return articles

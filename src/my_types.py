@@ -7,22 +7,15 @@ from typing import TypedDict
 
 
 @dataclass
-class Result:
+class ArticleInfo:
+    """論文の情報を格納する型"""
+
+    id: str
     url: str
     title_translated: str
     title_original: str
     words: list[str]
     subjects: list[str]
-
-
-# see https://note.nkmk.me/python-arxiv-api-download-rss/
-
-
-class Article(TypedDict):
-    arxiv_url: str
-    title: str
-    summary: str
-    tags: list[dict[str, str]]
 
 
 class Config(TypedDict):

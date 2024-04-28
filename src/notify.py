@@ -6,7 +6,7 @@ import requests
 import slackweb
 
 from .config import LINE_TOKEN, SLACK_ID
-from .my_types import Result
+from .my_types import ArticleInfo
 
 
 def send2app(text: str) -> None:
@@ -51,29 +51,29 @@ def create_dividing_text(num_of_articles: int) -> str:
     return f"{divider}\n" f"{text}" f"\n{divider}"
 
 
-def notify(results: list[Result]) -> None:
+def notify(articles: list[ArticleInfo]) -> None:
     """結果を整形して通知する
 
     Parameters
     ----------
-    results : list[Result]
+    articles : list[ArticleInfo]
         通知内容
     """
 
-    num_of_articles = len(results)
+    num_of_articles = len(articles)
     dividing_text = create_dividing_text(num_of_articles)
 
     # 通知の開始部分
     send2app(dividing_text)
 
     # 結果を通知
-    for result in results:
+    for article in articles:
         text = (
-            f"\n タイトル (原文): *{result.title_original}*"
-            f"\n タイトル (翻訳): *{result.title_translated}*"
-            f"\n keywords: `{result.words}`"
-            f"\n subjects: `{result.subjects}`"
-            f"\n URL: {result.url}"
+            f"\n タイトル (原文): *{article.title_original}*"
+            f"\n タイトル (翻訳): *{article.title_translated}*"
+            f"\n keywords: `{article.words}`"
+            f"\n subjects: `{article.subjects}`"
+            f"\n URL: {article.url}"
             f"\n {divider}"
         )
 
