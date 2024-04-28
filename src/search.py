@@ -183,3 +183,14 @@ def get_articles(
     articles = format_search_results_into_articles_info(search_results, keywords)
 
     return articles
+
+
+def find_article(url: str) -> arxiv.Result:
+    """
+    arXiv の URL から特定の論文を取得する
+    """
+
+    entry_id = url.split("arxiv.org/abs/")[-1]
+    article = next(client.results(arxiv.Search(id_list=[entry_id])))
+
+    return article
