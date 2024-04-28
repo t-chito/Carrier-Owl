@@ -6,7 +6,6 @@ import arxiv
 
 from .config import KEYWORDS, SUBJECT
 from .my_types import ArticleInfo, taxonomy
-from .translate import translate_texts
 
 client = arxiv.Client()
 
@@ -134,12 +133,7 @@ def format_search_results_into_articles_info(
 
     articles: list[ArticleInfo] = []
 
-    # API を叩くのを一回にするために、タイトルだけ先に取り出して翻訳する # FIXME: ダサい
-    titles_translated = translate_texts(
-        [search_result.title for search_result in search_results]
-    )
-
-    for index, search_result in enumerate(search_results):
+    for search_result in search_results:
         abstract, _subjects = (
             search_result.summary,
             search_result.categories,
@@ -153,7 +147,8 @@ def format_search_results_into_articles_info(
             id=search_result.get_short_id(),
             url=search_result.entry_id,
             title_original=search_result.title,
-            title_translated=titles_translated[index],
+            # 処理が翻訳機能に依存しないように、この時点では翻訳しないものとする
+            title_translated="",
             words=containing_keywords,
             subjects=subjects,
         )
@@ -162,7 +157,7 @@ def format_search_results_into_articles_info(
     return articles
 
 
-def get_articles(
+def get_article_info_list(
     subject: str = SUBJECT, keywords: list[str] = KEYWORDS
 ) -> list[ArticleInfo]:
     """学問領域とキーワードを指定して論文を検索する
