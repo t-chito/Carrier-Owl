@@ -8,7 +8,6 @@ authors = ["hppRC <hpp.ricecake@gmail.com>"]
 python = "^3.11"
 wheel = "^0.38.1"
 lxml = "4.9.4"
-pyyaml = "5.3.1"
 beautifulsoup4 = "^4.9.3"
 arxiv = "^2.1.0"
 python-dotenv = "^1.0.1"
@@ -19,8 +18,8 @@ slack-sdk = "^3.27.1"
 [tool.poetry.group.dev.dependencies]
 types-requests = "^2.31.0.20240406"
 types-beautifulsoup4 = "^4.12.0.20240229"
-types-pyyaml = "^6.0.12.20240311"
 taskipy = "^1.12.2"
+datamodel-code-generator = "^0.25.6"
 
 [build-system]
 requires = ["poetry>=0.12"]
@@ -32,6 +31,8 @@ start = "python -m src"
 
 # poetry run task tax
 tax = "python scripts/get_taxonomy.py"
+# poetry run task schema
+schema = "datamodel-codegen --input scripts/event_reaction_added.json --input-file-type json --output src/model.py"
 
 [[tool.mypy.overrides]]
 module = "arxiv.*"
