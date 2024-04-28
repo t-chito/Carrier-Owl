@@ -1,33 +1,24 @@
-"""通知関連の関数を提供するモジュール"""
+"""slack への通知機能を提供するモジュール"""
 
 import datetime
 
-import requests
 import slackweb
 
-from .config import LINE_TOKEN, SLACK_ID
+from .config import SLACK_ID
 from .my_types import ArticleInfo
 
 
-def send2app(text: str) -> None:
-    """slack または line に通知を送る
+def send_to_slack(text: str) -> None:
+    """slack に通知を送る
 
     Parameters
     ----------
     text : str
         通知するメッセージ
     """
-    # slack
     if SLACK_ID:
         slack = slackweb.Slack(url=SLACK_ID)
         slack.notify(text=text)
-
-    # line
-    if LINE_TOKEN:
-        line_notify_api = "https://notify-api.line.me/api/notify"
-        headers = {"Authorization": f"Bearer {LINE_TOKEN}"}
-        data = {"message": f"message: {text}"}
-        requests.post(line_notify_api, headers=headers, data=data)
 
 
 divider = "-" * 80
@@ -64,7 +55,7 @@ def notify(articles: list[ArticleInfo]) -> None:
     dividing_text = create_dividing_text(num_of_articles)
 
     # 通知の開始部分
-    send2app(dividing_text)
+    send_to_slack(dividing_text)
 
     # 結果を通知
     for article in articles:
@@ -77,7 +68,7 @@ def notify(articles: list[ArticleInfo]) -> None:
             f"\n {divider}"
         )
 
-        send2app(text)
+        send_to_slack(text)
 
     # 通知の終了部分
-    send2app(dividing_text)
+    send_to_slack(dividing_text)
