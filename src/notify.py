@@ -2,10 +2,13 @@
 
 import datetime
 
-import slackweb
+from slack_sdk.webhook import WebhookClient
 
 from .config import SLACK_ID
 from .my_types import ArticleInfo
+
+# 通知先のチャンネルを指定
+webhook = WebhookClient(url=SLACK_ID)
 
 
 def send_to_slack(text: str) -> None:
@@ -17,8 +20,7 @@ def send_to_slack(text: str) -> None:
         通知するメッセージ
     """
     if SLACK_ID:
-        slack = slackweb.Slack(url=SLACK_ID)
-        slack.notify(text=text)
+        webhook.send(text=text)
 
 
 divider = "-" * 80

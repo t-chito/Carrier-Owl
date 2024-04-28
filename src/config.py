@@ -29,8 +29,8 @@ KEYWORDS = config["keywords"]
 dotenv_path = join(dirname(__file__), "..", ".env.local")
 env_values = dotenv_values(dotenv_path)
 
-SLACK_ID: str | None = os.getenv("SLACK_ID") or env_values.get("SLACK_ID", None)
-LINE_TOKEN: str | None = os.getenv("LINE_TOKEN") or env_values.get("LINE_TOKEN", None)
-DEEPL_AUTH_KEY: str | None = os.getenv("DEEPL_AUTH_KEY") or env_values.get(
-    "DEEPL_AUTH_KEY", None
+SLACK_ID: str = os.getenv("SLACK_ID") or env_values.get("SLACK_ID") or ""
+LINE_TOKEN: str = os.getenv("LINE_TOKEN") or env_values.get("LINE_TOKEN") or ""
+DEEPL_AUTH_KEY: str = (
+    os.getenv("DEEPL_AUTH_KEY") or env_values.get("DEEPL_AUTH_KEY") or ""
 )
