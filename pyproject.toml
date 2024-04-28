@@ -32,7 +32,7 @@ start = "python -m src"
 # poetry run task tax
 tax = "python scripts/get_taxonomy.py"
 # poetry run task schema
-schema = "datamodel-codegen --input scripts/event_reaction_added.json --input-file-type json --output src/model.py"
+schema = "datamodel-codegen --input scripts/slack_event_reaction_added.json --input-file-type json --output src/my_types/slack_event_reaction_added.py --output-model-type typing.TypedDict"
 
 [[tool.mypy.overrides]]
 module = "arxiv.*"

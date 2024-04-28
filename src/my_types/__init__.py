@@ -12,5 +12,15 @@ SlackEventReactionAdded は
 
 from .my_types import ArticleInfo, Config, taxonomy
 from .slack_event_reaction_added import Model as SlackEventReactionAdded
+from .slack_url_verification import Model as SlackUrlVerification
 
-__all__ = ["ArticleInfo", "Config", "taxonomy", "SlackEventReactionAdded"]
+SlackPostEvent = SlackEventReactionAdded | SlackUrlVerification
+
+__all__ = [
+    "ArticleInfo",
+    "Config",
+    "taxonomy",
+    "SlackEventReactionAdded",
+    "SlackEventUrlVerification",
+    "SlackPostEvent",
+]
