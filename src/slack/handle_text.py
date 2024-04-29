@@ -51,3 +51,26 @@ def create_message_text(article: ArticleInfo) -> str:
     )
 
     return text
+
+
+def extract_url_from_message_text(text: str) -> str:
+    """メッセージの文字列から URL を抽出する
+
+    Parameters
+    ----------
+    text : str
+        抽出対象の文字列 (Slack のメッセージ)
+
+    Returns
+    -------
+    str
+        URL。見つからない場合は空文字列を返す。
+    """
+
+    splitter = "URL: "
+    lines = text.split("\n")
+    for line in lines:
+        if splitter in line:
+            return line.split(splitter)[1]
+
+    return ""
