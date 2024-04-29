@@ -11,13 +11,13 @@ from .my_types import ArticleInfo
 webhook = WebhookClient(url=SLACK_ID)
 
 
-def send_to_slack(text: str) -> None:
-    """slack に通知を送る
+def send_text_to_slack(text: str) -> None:
+    """slack にテキストを送る
 
     Parameters
     ----------
     text : str
-        通知するメッセージ
+        送信するメッセージ
     """
     if SLACK_ID:
         webhook.send(text=text)
@@ -57,7 +57,7 @@ def notify(articles: list[ArticleInfo]) -> None:
     dividing_text = create_dividing_text(num_of_articles)
 
     # 通知の開始部分
-    send_to_slack(dividing_text)
+    send_text_to_slack(dividing_text)
 
     # 結果を通知
     for article in articles:
@@ -70,7 +70,7 @@ def notify(articles: list[ArticleInfo]) -> None:
             f"\n {divider}"
         )
 
-        send_to_slack(text)
+        send_text_to_slack(text)
 
     # 通知の終了部分
-    send_to_slack(dividing_text)
+    send_text_to_slack(dividing_text)
