@@ -2,7 +2,7 @@
 メイン関数
 """
 
-from .arxiv.search import get_article_info_list
+from .arxiv import get_article_info_list
 from .deepl.translate import translate_texts
 from .slack.notify import notify
 
