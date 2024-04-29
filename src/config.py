@@ -30,7 +30,17 @@ dotenv_path = join(dirname(__file__), "..", ".env.local")
 env_values = dotenv_values(dotenv_path)
 
 SLACK_ID: str = os.getenv("SLACK_ID") or env_values.get("SLACK_ID") or ""
+SLACK_BOT_TOKEN: str = (
+    os.getenv("SLACK_BOT_TOKEN") or env_values.get("SLACK_BOT_TOKEN") or ""
+)
+SLACK_CHANNEL_ID: str = (
+    os.getenv("SLACK_CHANNEL_ID") or env_values.get("SLACK_CHANNEL_ID") or ""
+)
+
 LINE_TOKEN: str = os.getenv("LINE_TOKEN") or env_values.get("LINE_TOKEN") or ""
 DEEPL_AUTH_KEY: str = (
     os.getenv("DEEPL_AUTH_KEY") or env_values.get("DEEPL_AUTH_KEY") or ""
 )
+
+if "GOOGLE_API_KEY" not in os.environ:
+    os.environ["GOOGLE_API_KEY"] = env_values.get("GOOGLE_API_KEY") or ""
