@@ -3,8 +3,8 @@
 """
 
 from .arxiv import get_article_info_list
-from .deepl.translate import translate_texts
-from .slack.notify import notify
+from .deepl import translate_texts
+from .slack import notify
 
 
 def main() -> None:
