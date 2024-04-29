@@ -2,9 +2,9 @@
 メイン関数
 """
 
-from .notify import notify
-from .search import get_article_info_list
-from .translate import translate_texts
+from .arxiv.search import get_article_info_list
+from .deepl.translate import translate_texts
+from .slack.notify import notify
 
 
 def main() -> None:

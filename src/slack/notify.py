@@ -4,8 +4,8 @@ import datetime
 
 from slack_sdk.webhook import WebhookClient
 
-from .config import SLACK_ID
-from .my_types import ArticleInfo
+from ..config import SLACK_ID
+from ..my_types import ArticleInfo
 
 # 通知先のチャンネルを指定
 webhook = WebhookClient(url=SLACK_ID)

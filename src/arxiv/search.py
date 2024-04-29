@@ -4,8 +4,8 @@ import datetime
 
 import arxiv
 
-from .config import KEYWORDS, SUBJECT
-from .my_types import ArticleInfo, taxonomy
+from ..config import KEYWORDS, SUBJECT
+from ..my_types.my_types import ArticleInfo, taxonomy
 
 client = arxiv.Client()
 

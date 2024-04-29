@@ -2,7 +2,7 @@
 
 import requests
 
-from .config import DEEPL_AUTH_KEY
+from ..config import DEEPL_AUTH_KEY
 
 
 def translate_text(text: str, source_lang: str = "EN", target_lang: str = "JA") -> str:
