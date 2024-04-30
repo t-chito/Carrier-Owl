@@ -44,10 +44,9 @@ def convert_subjects_category_to_expression(subject: str) -> str:
     """
 
     if subject not in taxonomy:
-        # 今は cs 系のみ taxonomy に用意しているので、それ以外はそのまま返す
         return subject
     else:
-        return subject + ": " + taxonomy[subject]["name"]
+        return subject + ": " + taxonomy[subject]
 
 
 def format_search_results_into_articles_info(
