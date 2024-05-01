@@ -42,5 +42,6 @@ DEEPL_AUTH_KEY: str = (
     os.getenv("DEEPL_AUTH_KEY") or env_values.get("DEEPL_AUTH_KEY") or ""
 )
 
-if "GOOGLE_API_KEY" not in os.environ:
-    os.environ["GOOGLE_API_KEY"] = env_values.get("GOOGLE_API_KEY") or ""
+GOOGLE_API_KEY: str = (
+    os.getenv("GOOGLE_API_KEY") or env_values.get("GOOGLE_API_KEY") or ""
+)

@@ -1,7 +1,7 @@
 from ..config import KEYWORDS, SUBJECT
 from ..my_types.my_types import ArticleInfo
 from .format import format_search_results_into_articles_info
-from .retrieve import retrieve_article
+from .retrieve import download_pdf, retrieve_article
 from .search import search_arxiv_articles
 
 
@@ -28,4 +28,4 @@ def get_article_info_list(
     return articles
 
 
-__all__ = ["get_article_info_list", "retrieve_article"]
+__all__ = ["get_article_info_list", "retrieve_article", "download_pdf"]
