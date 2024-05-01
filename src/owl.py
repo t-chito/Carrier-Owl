@@ -4,9 +4,9 @@
 TODO: __main__.py と main.py があるので統一したい
 """
 
-from .my_arxiv import get_article_info_list
-from .my_deepl import translate_texts
-from .my_slack import notify
+from my_packages.arxiv import get_article_info_list
+from my_packages.deepl import translate_texts
+from my_packages.slack import notify
 
 
 def main() -> None:

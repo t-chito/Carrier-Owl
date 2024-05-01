@@ -61,7 +61,6 @@ def search_arxiv_articles(subject: str, keywords: list[str]) -> list[arxiv.Resul
         query=query,
         max_results=100,
         sort_by=arxiv.SortCriterion.SubmittedDate,
-        iterative=False,
     )
     results = client.results(search)
     return list(results)

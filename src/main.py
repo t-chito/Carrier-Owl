@@ -7,15 +7,15 @@ from http import HTTPStatus
 import functions_framework
 from flask import Request, Response
 
-# inner modules
-from my_arxiv import download_pdf, retrieve_article
-from my_deepl import translate_text
-from my_llm import summarize_with_llm
-from my_slack import (
+# inner packages
+from my_packages.arxiv import download_pdf, retrieve_article
+from my_packages.deepl import translate_text
+from my_packages.llm import summarize_with_llm
+from my_packages.my_types import SlackEventReactionAdded
+from my_packages.slack import (
     extract_url_from_message,
     reply_to_message,
 )
-from my_types import SlackEventReactionAdded
 
 # 処理と、トリガーとなるリアクションの対応表
 REACTIONS_MAP = {

@@ -26,7 +26,7 @@ KEYWORDS = config["keywords"]
 """
 
 # local で実行する場合の環境変数の読み込み
-dotenv_path = join(dirname(__file__), "..", ".env.local")
+dotenv_path = join(dirname(__file__), "..", "..", ".env.local")
 env_values = dotenv_values(dotenv_path)
 
 SLACK_ID: str = os.getenv("SLACK_ID") or env_values.get("SLACK_ID") or ""
