@@ -41,6 +41,10 @@ tax = "python scripts/get_taxonomy.py"
 # poetry run task schema
 schema = "datamodel-codegen --input scripts/slack_event_reaction_added.json --input-file-type json --output src/my_types/slack_event_reaction_added.py --output-model-type typing.TypedDict"
 
+[tool.mypy]
+mypy_path = "src" # mypy のモジュールの検索パスに src を追加
+disallow_untyped_defs = true # 型のない関数の定義を許可しない
+
 [[tool.mypy.overrides]]
 module = "arxiv.*"
-ignore_missing_imports = true
+ignore_missing_imports = true # arxiv パッケージの型情報がないため無視
