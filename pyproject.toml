@@ -16,6 +16,9 @@ langchain-google-genai = "^1.0.3"
 langchain = "^0.1.16"
 pypdf = "^4.2.0"
 tiktoken = "^0.6.0"
+# gcf デプロイ用
+functions-framework = "^3.6.0"
+flask = "^3.0.3"
 
 [tool.poetry.dev-dependencies]
 
