@@ -41,7 +41,3 @@ schema = "datamodel-codegen --input scripts/slack_event_reaction_added.json --in
 [[tool.mypy.overrides]]
 module = "arxiv.*"
 ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = "slackweb.*"
-ignore_missing_imports = true
