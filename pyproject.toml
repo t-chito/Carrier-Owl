@@ -33,8 +33,8 @@ requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
 
 [tool.taskipy.tasks]
-# poetry run task start
-start = "python -m src"
+# poetry run task fly
+fly = "python src/owl.py"
 
 # poetry run task tax
 tax = "python scripts/get_taxonomy.py"

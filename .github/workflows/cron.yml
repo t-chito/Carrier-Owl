@@ -29,7 +29,7 @@ jobs:
         run: poetry install
 
       - name: Run owl
-        run: poetry run task start
+        run: poetry run task fly
         env:
           DEEPL_AUTH_KEY: ${{ secrets.DEEPL_AUTH_KEY }}
           SLACK_ID: ${{ secrets.SLACK_ID }}

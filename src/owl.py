@@ -1,7 +1,5 @@
 """
-メイン関数
-
-TODO: __main__.py と main.py があるので統一したい
+論文リストを Slack に通知するスクリプト
 """
 
 from my_packages.arxiv import get_article_info_list
@@ -10,6 +8,7 @@ from my_packages.slack import notify
 
 
 def main() -> None:
+    """論文のリストを取得して Slack に通知する"""
     articles = get_article_info_list()
 
     titles_translated = translate_texts(
