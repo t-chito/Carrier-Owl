@@ -10,8 +10,17 @@ from .common import client
 
 
 def retrieve_article(url: str) -> arxiv.Result:
-    """
-    arXiv の URL から特定の論文を取得する
+    """arXiv の URL から特定の論文を取得する
+
+    Parameters
+    ----------
+    url : str
+        arXiv の URL
+
+    Returns
+    -------
+    arxiv.Result
+        論文データ
     """
 
     entry_id = url.split("arxiv.org/abs/")[-1]
@@ -20,8 +29,15 @@ def retrieve_article(url: str) -> arxiv.Result:
     return article
 
 
-def download_pdf(url: str) -> str:
-    """指定した URL に対応する論文の PDF をダウンロードする
+def download_pdf(article: arxiv.Result, dirpath: str = "./") -> str:
+    """指定した article の PDF をダウンロードする
+
+    Parameters
+    ----------
+    article : arxiv.Result
+        論文
+    dirpath : str, optional
+        ダウンロード先のディレクトリ, by default "./"
 
     Returns
     -------
@@ -29,6 +45,5 @@ def download_pdf(url: str) -> str:
         ダウンロードした PDF の絶対パス
     """
 
-    article = retrieve_article(url)
-    file_path = article.download_pdf()
+    file_path = article.download_pdf(dirpath=dirpath)
     return path.abspath(file_path)
