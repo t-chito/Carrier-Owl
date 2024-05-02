@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  ci:
+  fly:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,10 +21,10 @@ jobs:
         with:
           poetry-version: 1.8.2
 
-      - name: install dependencies
+      - name: Install dependencies
         run: poetry install
 
-      - name: Run owl
+      - name: Fly owl
         run: poetry run task fly
         env:
           DEEPL_AUTH_KEY: ${{ secrets.DEEPL_AUTH_KEY }}
