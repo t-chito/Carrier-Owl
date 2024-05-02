@@ -26,7 +26,7 @@ jobs:
 
       - name: Insert comment to requirements.txt
         run: |
-          sed -i '1i # GSF 用に main.py と同じディレクトリに配置しているファイルです。' requirements.txt
+          sed -i '1i # GSF 用に main.py と同じディレクトリに配置しているファイルです。' src/requirements.txt
 
       - name: Auto Commit
         uses: stefanzweifel/git-auto-commit-action@v5
