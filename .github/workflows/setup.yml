@@ -1,4 +1,4 @@
-name: Setup # 今は requirements.txt を自動更新するだけ
+name: Setup
 
 on:
   push:
@@ -7,28 +7,42 @@ on:
       - master
 
 jobs:
+  # poetry.lock が更新されたときに requirements.txt を自動更新する
   setup:
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
+
+      # poetry.lock が更新されたかどうかを確認する
+      - name: Check for changes in poetry.lock
+        id: check_change
+        run: |
+          git diff --quiet HEAD^ HEAD -- poetry.lock || echo "::set-output name=changed::true"
+
+      # 以降のステップは poetry.lock が更新されたときのみ実行する
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+        if: steps.check_change.outputs.changed == 'true'
 
       - name: Run image
         uses: abatilo/actions-poetry@v2.4.0
         with:
           poetry-version: 1.8.2
+        if: steps.check_change.outputs.changed == 'true'
 
       - name: Make requirements.txt
         run: poetry export -f requirements.txt --output src/requirements.txt
+        if: steps.check_change.outputs.changed == 'true'
 
       - name: Insert comment to requirements.txt
         run: |
           sed -i '1i # GSF 用に main.py と同じディレクトリに配置しているファイルです。' src/requirements.txt
+        if: steps.check_change.outputs.changed == 'true'
 
       - name: Auto Commit
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Update requirements.txt
+        if: steps.check_change.outputs.changed == 'true'
