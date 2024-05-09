@@ -23,7 +23,7 @@ jobs:
         # Workload Identity連携を利用してGitHub ActionsからGoogle Cloudへ認証を行う
         uses: "google-github-actions/auth@v1"
         with:
-          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER_ID }}
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER }}
           service_account: gha-cloudfunctions-deploy@${{ vars.GC_PROJECT_ID }}.iam.gserviceaccount.com
 
       - name: "Set up Cloud SDK"
