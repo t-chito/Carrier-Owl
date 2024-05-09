@@ -30,12 +30,12 @@ TMP_DIR = "/tmp"
 
 
 @functions_framework.http
-def owl_function(request: Request) -> Response:
-    """リクエストをいい感じに処理する
+def deliver(request: Request) -> Response:
+    """リクエストを処理し、受け取ったリアクションに応じた処理の結果を slack に送る
 
     1. 認証リクエストの場合は認証を行う。
     2. 再送されたリクエストの場合、処理をせずに終了する。
-    3. 上記以外はリクエストを処理する。
+    3. 上記以外はリクエストを処理し、結果を slack に送る
 
     - https://api.slack.com/apis/connections/events-api#responding
     - https://dev.classmethod.jp/articles/slack-resend-matome/#toc-2

@@ -1,0 +1,49 @@
+name: Deploy Cloud Functions
+# https://dev.classmethod.jp/articles/deploy-the-cloud-functions-gen2-using-github-actions/
+on:
+  workflow_run:
+    workflows: ["Setup"] # Setup ワークフローが完了した時に実行
+    types:
+      - completed
+
+jobs:
+  deploy-job:
+    runs-on: "ubuntu-latest"
+    permissions:
+      contents: "read"
+      id-token: "write"
+
+    steps:
+      # ソースコードのチェックアウトをする
+      - uses: "actions/checkout@v4"
+
+      - id: "auth"
+        name: "Authenticate to Google Cloud"
+        # Workload Identity連携を利用してGitHub ActionsからGoogle Cloudへ認証を行う
+        uses: "google-github-actions/auth@v1"
+        with:
+          workload_identity_provider: ${{ secrets.WORKLOAD_IDENTITY_PROVIDER_ID }}
+          service_account: gha-cloudfunctions-deploy@${{ vars.GC_PROJECT_ID }}.iam.gserviceaccount.com
+
+      - name: "Set up Cloud SDK"
+        # gcloudコマンドを実行するためにCloud SDKを準備する
+        uses: "google-github-actions/setup-gcloud@v1"
+
+      - name: "Deploy Cloud Functions gen2 Using gcloud command"
+        # gcloudコマンドを利用してCloud Functionsをデプロイする
+        # NOTE: 本当は Google Cloud Secret Manager を使ったほうが行儀が良いが、めんどいので set-env-vars で妥協
+        run: >-
+          gcloud functions deploy ${{ vars.CLOUD_FUNCTIONS_ID }}
+          --gen2
+          --runtime=python311
+          --region=asia-northeast1
+          --source=./src
+          --entry-point=deliver
+          --trigger-http
+          --no-allow-unauthenticated
+          --set-env-vars
+          GCP_PROJECT=${{ vars.GC_PROJECT_ID }},
+          DEEPL_AUTH_KEY=${{ secrets.DEEPL_AUTH_KEY }},
+          SLACK_ID=${{ secrets.SLACK_ID }},
+          SLACK_BOT_TOKEN=${{ secrets.SLACK_BOT_TOKEN }}, SLACK_CHANNEL_ID=${{ secrets.SLACK_CHANNEL_ID }}, GOOGLE_API_KEY=${{ secrets.GOOGLE_API_KEY }}
+          --run-service-account carrier-owl@${{ vars.GC_PROJECT_ID }}.iam.gserviceaccount.com
