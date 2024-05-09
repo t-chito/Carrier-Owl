@@ -1,6 +1,7 @@
 name: Deploy Cloud Functions
 # https://dev.classmethod.jp/articles/deploy-the-cloud-functions-gen2-using-github-actions/
 on:
+  workflow_dispatch:
   workflow_run:
     workflows: ["Setup"] # Setup ワークフローが完了した時に実行
     types:
