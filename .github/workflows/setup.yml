@@ -10,6 +10,8 @@ jobs:
   # poetry.lock が変更されたときに requirements.txt を自動更新する
   setup:
     runs-on: ubuntu-latest
+    env:
+      file_changed: "false"
 
     steps:
       - uses: actions/checkout@v4
